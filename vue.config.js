@@ -37,7 +37,17 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    // before: require('./mock/mock-server.js')
+    proxy: {
+      '/': {
+          target: 'http://172.16.0.121:8080', // 代理地址，这里设置的地址会代替axios中设置的baseURL
+          changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
+          ws: true,
+          pathRewrite: {
+              '^/': ''
+          }
+      },
+    }
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

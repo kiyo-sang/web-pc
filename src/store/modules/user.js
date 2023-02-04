@@ -4,9 +4,9 @@ import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
-    token: getToken(),
+    // token: getToken(),
     name: '',
-    avatar: ''
+    // avatar: ''
   }
 }
 
@@ -16,15 +16,15 @@ const mutations = {
   RESET_STATE: (state) => {
     Object.assign(state, getDefaultState())
   },
-  SET_TOKEN: (state, token) => {
-    state.token = token
-  },
+  // SET_TOKEN: (state, token) => {
+  //   state.token = token
+  // },
   SET_NAME: (state, name) => {
     state.name = name
   },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
-  }
+  // SET_AVATAR: (state, avatar) => {
+  //   state.avatar = avatar
+  // }
 }
 
 const actions = {
@@ -33,7 +33,7 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        // const { data } = response
+        // const data = response.data;
         // commit('SET_TOKEN', data.token)
         // setToken(data.token)
         resolve()
@@ -53,10 +53,10 @@ const actions = {
           return reject('登录状态失效，请重新登录')
         }
 
-        const { name, avatar } = data
+        const { username } = data
 
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
+        commit('SET_NAME', username)
+
         resolve(data)
       }).catch(error => {
         reject(error)

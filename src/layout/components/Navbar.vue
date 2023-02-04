@@ -1,30 +1,54 @@
 <template>
-  <div class="navbar">
-    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+  <div>
+    <div class="navbar">
+      <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
-    <breadcrumb class="breadcrumb-container" />
+      <breadcrumb class="breadcrumb-container" />
 
-    <div class="right-menu">
-      <el-dropdown class="avatar-container" trigger="click">
-        <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
-        </div>
-        <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/profile/index">
-            <el-dropdown-item>个人中心</el-dropdown-item>
-          </router-link>
-          <router-link to="/">
-            <el-dropdown-item>
-              首页
+      <div class="right-menu">
+        <el-dropdown class="avatar-container" trigger="click">
+          <div class="avatar-wrapper">
+            <!-- <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar"> -->
+            <el-avatar> {{ name }} </el-avatar>
+            <i class="el-icon-caret-bottom" />
+          </div>
+          <el-dropdown-menu slot="dropdown" class="user-dropdown">
+          
+              <el-dropdown-item @click.native="dialogVisible = true">修改密码</el-dropdown-item>
+            <router-link to="/">
+              <el-dropdown-item>
+                首页
+              </el-dropdown-item>
+            </router-link>
+            <el-dropdown-item divided @click.native="logout">
+              <span style="display:block;">退出登录</span>
             </el-dropdown-item>
-          </router-link>
-          <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">退出登录</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+    >
+      <!-- <span>这是一段信息</span> -->
+
+      <el-row type="flex" class="row-bg" justify="center">
+        <el-col :span="6"><div class="grid-content">旧密码</div></el-col>
+        <el-col :span="10"><el-input placeholder="请输入密码" v-model="passWord.pwd" show-password></el-input></el-col>
+
+      </el-row>
+      <el-row type="flex" class="row-bg" justify="center">
+        <el-col :span="6"><div class="grid-content">新密码</div></el-col>
+        <el-col :span="10"><el-input placeholder="请输入密码" v-model="passWord.newPwd" show-password></el-input></el-col>
+
+      </el-row>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="isOk">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -32,25 +56,57 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import { updatePwd } from '@/api/user'
 
 export default {
+  computed: {
+    ...mapGetters([
+      'sidebar',
+      // 'name'
+    ]),
+    name() {
+      return this.$store.state.user.name
+    }
+  },
+  data() {
+      return {
+        dialogVisible: false,
+        passWord: {
+          pwd: '',
+          newPwd:'',
+          username: this.$store.state.user.name
+        }
+      };
+  },
   components: {
     Breadcrumb,
     Hamburger
   },
-  computed: {
-    ...mapGetters([
-      'sidebar',
-      'avatar'
-    ])
-  },
+  
   methods: {
+ 
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    },
+    isOk(){
+      if(this.passWord.pwd===''||this.passWord.newPwd==='') {
+        this.$message.error('密码不能为空！')
+      } else if (this.passWord.pwd===this.passWord.newPwd) {
+        this.$message.error('密码不能相同！')
+      }
+       else {
+        updatePwd(this.passWord).then((data) => {
+          this.dialogVisible = false
+          this.$message('修改成功！')
+        }).catch(error => {
+        })
+      }
+      
+      
     }
   }
 }
@@ -133,4 +189,16 @@ export default {
     }
   }
 }
+
+.row-bg{
+  margin-top: 10px;
+
+  .grid-content{
+  line-height: 40px;
+    text-align: right;
+    padding-right: 10px;
+  }
+}
+
+
 </style>

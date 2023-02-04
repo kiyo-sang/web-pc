@@ -107,24 +107,16 @@ export const constantRoutes = [
     meta: { title: '菜谱', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'information',
-        name: '菜谱信息',
-        component: () => import('@/views/recipe/information/index'),
-        meta: { title: '菜谱信息', icon: 'recipeInformationIcon' },
-        children: [
-          {
-            path: 'category',
-            name: '菜谱分类',
-            component: () => import('@/views/recipe/publishing/index'),
-            meta: { title: '可选食材', icon: 'ingredientsIcon' }
-          },
-          {
-            path: 'content',
-            name: '菜谱管理',
-            component: () => import('@/views/recipe/publishing/index'),
-            meta: { title: '可选食材', icon: 'ingredientsIcon' }
-          }
-        ]
+        path: 'category',
+        name: '菜谱分类',
+        component: () => import('@/views/recipe/publishing/index'),
+        meta: { title: '菜谱分类', icon: 'ingredientsIcon' }
+      },
+      {
+        path: 'content',
+        name: '菜谱管理',
+        component: () => import('@/views/recipe/content/index'),
+        meta: { title: '菜谱管理', icon: 'ingredientsIcon' }
       },
       {
         path: 'publishing',

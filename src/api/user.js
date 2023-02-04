@@ -22,3 +22,12 @@ export function logout() {
     method: 'post'
   })
 }
+
+
+export function updatePwd(data) {
+  return request({
+    url: '/user/updatePwd',
+    method: 'post',
+    data
+  })
+}
