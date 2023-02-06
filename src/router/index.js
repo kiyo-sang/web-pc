@@ -107,9 +107,9 @@ export const constantRoutes = [
     meta: { title: '菜谱', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'category',
+        path: 'information',
         name: '菜谱分类',
-        component: () => import('@/views/recipe/publishing/index'),
+        component: () => import('@/views/recipe/information/index'),
         meta: { title: '菜谱分类', icon: 'ingredientsIcon' }
       },
       {
