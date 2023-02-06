@@ -21,3 +21,17 @@ export function addNotice(data) {
         data
     })
 }
+
+export function EveryDayList() {
+    return request({
+        url: '/EveryDay/list',
+        method: 'get'
+    })
+}
+
+export function EveryDayDelete(id) {
+    return request({
+        url: `/EveryDay/delete/${id}`,
+        method: 'get'
+    })
+}
