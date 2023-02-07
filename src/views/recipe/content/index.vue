@@ -13,7 +13,7 @@
       <el-table-column align="center" label="主图">
         <template slot-scope="scope">
           <img v-if="scope.row.mainimage ===null" src="https://img95.699pic.com/xsj/0c/oj/94.jpg%21/fw/700/watermark/url/L3hzai93YXRlcl9kZXRhaWwyLnBuZw/align/southeast" height="45px">
-          <img v-else :src="scope.row.mainimage" height="45px">
+          <img v-else :src="scope.row.mainimage" height="45px" referrerpolicy="no-referrer">
           <!-- {{ scope.row.mainimage }} -->
         </template>
       </el-table-column>

@@ -16,7 +16,7 @@
                     <el-table-column align="center" label="主图">
                         <template slot-scope="scope">
                         <img v-if="scope.row.mainimage === null ||scope.row.mainimage === ''" src="https://img95.699pic.com/xsj/0c/oj/94.jpg%21/fw/700/watermark/url/L3hzai93YXRlcl9kZXRhaWwyLnBuZw/align/southeast" height="45px">
-                        <img v-else :src="scope.row.mainimage" height="45px">
+                        <img v-else :src="scope.row.mainimage" height="45px" referrerpolicy="no-referrer">
                         </template>
                     </el-table-column>
                     <el-table-column align="center" label="菜谱名称" prop="name" width="110" />
@@ -45,11 +45,11 @@
                             <el-button
                             size="mini"
                             type="success"
-                            @click="handleDelete(scope.$index, scope.row)">通过</el-button>
+                            @click="pass(scope.row.id)">通过</el-button>
                             <el-button
                             size="mini"
                             type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">驳回</el-button>
+                            @click="fail(scope.row.id)">驳回</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { ApprovalList } from "@/api/approval";
+import { ApprovalList,passOne,failOne } from "@/api/approval";
 import { getMenuTypeList } from '@/api/menu'
 
     export default {
@@ -79,6 +79,18 @@ import { getMenuTypeList } from '@/api/menu'
             this.fetchData()
         },
         methods: {
+            fail(id) {
+                failOne(id).then(response => {
+                    this.$message('已成功！')
+                    this.tableData = this.tableData.filter(item => item.id !== id)
+                })
+            },
+            pass(id) {
+                passOne(id).then(response => {
+                    this.$message('已成功审批！')
+                    this.tableData = this.tableData.filter(item => item.id !== id)
+                })
+            },
             fetchData() {
                 this.listLoading = true
                 ApprovalList().then(response => {

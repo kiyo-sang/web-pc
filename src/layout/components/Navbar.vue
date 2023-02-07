@@ -94,7 +94,7 @@ export default {
     },
     isOk(){
       if(this.passWord.pwd===''||this.passWord.newPwd==='') {
-        this.$message.error('密码不能为空！')
+        c
       } else if (this.passWord.pwd===this.passWord.newPwd) {
         this.$message.error('密码不能相同！')
       }
