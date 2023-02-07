@@ -35,3 +35,10 @@ export function EveryDayDelete(id) {
         method: 'get'
     })
 }
+
+export function EveryDayAdd(id) {
+    return request({
+        url: `/EveryDay/add/${id}`,
+        method: 'get'
+    })
+}

@@ -33,21 +33,21 @@
             </el-table-column>
         </el-table>
         <el-dialog
-        title="新增公告"
+        title="新增每日菜谱"
         :visible.sync="dialogVisible"
         width="30%"
         >
         <!-- <span>这是一段信息</span> -->
 
         <el-row type="flex" class="row-bg" justify="center">
-            <el-col :span="4" class="col-title"><div class="grid-content">公告内容</div></el-col>
+            <el-col :span="4" class="col-title"><div class="grid-content">菜谱</div></el-col>
             <el-col :span="20">
                 <el-select v-model="mid" filterable placeholder="请选择">
                     <el-option
                     v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
                     </el-option>
                 </el-select>
             </el-col>
@@ -63,8 +63,8 @@
 </template>
 
 <script>
-import { EveryDayList, EveryDayDelete, addNotice } from "@/api/admin";
-
+import { EveryDayList, EveryDayDelete, addNotice, EveryDayAdd} from "@/api/admin";
+import { getMenuList } from "@/api/menu";
 export default {
     data() {
         return {
@@ -75,6 +75,13 @@ export default {
         }
     },
     methods: {
+        // getMenuList
+        menuList() {
+            this.listLoading = true
+            getMenuList().then(response => {
+                this.options = response.data
+            })
+        },
         fetchData() {
             this.listLoading = true
             EveryDayList().then(response => {
@@ -89,7 +96,7 @@ export default {
             })
         },
         isOk() {
-            addNotice(this.addData).then(response => {
+            EveryDayAdd(this.mid).then(response => {
                 this.fetchData()
                 this.$message('添加成功')
                 this.dialogVisible = false
@@ -97,7 +104,9 @@ export default {
         }
     },
     created() {
-        this.fetchData()
+        this.fetchData(),
+        this.menuList()
+
     },
 }
 </script>

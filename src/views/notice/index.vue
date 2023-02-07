@@ -12,7 +12,7 @@
                 align="center"
             />
             <el-table-column align="center" label="id" prop="id" width="110" />
-            <el-table-column align="center" label="内容" prop="content" width="1300"/>
+            <el-table-column align="center" label="内容" prop="content" min-width="500"/>
             <el-table-column
                 label="创建日期"
                 width="210"
@@ -85,6 +85,7 @@ export default {
             console.log(this.addData);
             addNotice(this.addData).then(response => {
                 this.fetchData()
+                this.addData.content = ''
                 this.$message('添加成功')
                 this.dialogVisible = false
             })
